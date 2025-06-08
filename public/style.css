@@ -5,21 +5,20 @@
     box-sizing: border-box;
 }
 
-/* 星空背景核心代码 */
 body {
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
     background: radial-gradient(ellipse at bottom, #1B2735 0%, #090A0F 100%);
     height: 100vh;
     overflow: hidden;
+    position: relative; /* 允许流星雨定位 */
 }
 
-/* 星星动画 */
+/* 星星背景 (保持) */
 @keyframes move-stars {
     from { background-position: 0 0; }
     to   { background-position: 0 -10000px; }
 }
 
-/* 星星图层 */
 .stars, .stars2, .stars3 {
     position: absolute;
     top: 0;
@@ -33,7 +32,6 @@ body {
     background-position: 0 0;
 }
 
-/* 不同大小和速度的星星，使用内联SVG作为背景图，无需额外文件 */
 .stars {
     background-image: url('data:image/svg+xml;base64,PHN2ZyB2ZXJzaW9uPSIxLjEiIGlkPSJMYXllcl8xIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB4PSIwcHgiIHk9IjBweCIgd2lkdGg9IjVweCIgaGVpZ2h0PSI1cHgiIHZpZXdCb3g9IjAgMCA1IDUiIGVuYWJsZS1iYWNrZ3JvdW5kPSJuZXcgMCAwIDUgNSIgeG1sOnNwYWNlPSJwcmVzZXJ2ZSI+PHJlY3QgeD0iMiIgeT0iMiIgd2lkdGg9IjEiIGhlaWdodD0iMSIgZmlsbD0iI0ZGRkZGRiIvPjwvc3ZnPg==');
     animation: move-stars 50s linear infinite;
@@ -47,6 +45,34 @@ body {
     animation: move-stars 150s linear infinite;
 }
 
+/* 流星雨 */
+.meteor {
+    position: absolute;
+    display: block;
+    top: -100px; /* 初始在屏幕上方 */
+    background: linear-gradient(45deg, rgba(255, 255, 255, 0.8) 0%, rgba(0,0,0,0) 100%);
+    border-radius: 50%;
+    opacity: 0;
+    z-index: 11; /* 在聊天窗口之上 */
+}
+
+@keyframes meteor-shower {
+    0% {
+        transform: translateX(0) translateY(0) rotate(45deg);
+        opacity: 0;
+    }
+    10% {
+        opacity: 1;
+    }
+    80% {
+        opacity: 0.7;
+    }
+    100% {
+        transform: translateX(calc(200vh + 100vw)) translateY(calc(200vh + 100vw)) rotate(45deg);
+        opacity: 0;
+    }
+}
+
 /* 聊天窗口容器 */
 .chat-container {
     display: flex;
@@ -58,15 +84,15 @@ body {
     z-index: 10;
 }
 
-/* 聊天窗口主体样式 */
+/* 浪漫聊天框 */
 .chat-window {
     width: 90%;
     max-width: 600px;
-    background: rgba(255, 255, 255, 0.1);
-    backdrop-filter: blur(10px);
-    border-radius: 12px;
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    background: rgba(255, 255, 255, 0.15); /* 更柔和的半透明白色 */
+    backdrop-filter: blur(15px); /* 更强的模糊效果 */
+    border-radius: 15px; /* 更圆润的边角 */
+    border: 1px solid rgba(255, 255, 255, 0.25); /* 更柔和的边框 */
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2); /* 更明显的阴影 */
     display: flex;
     flex-direction: column;
     height: 80vh;
@@ -76,82 +102,84 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 0 20px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-    color: white;
+    padding: 15px 20px; /* 稍微增加内边距 */
+    border-bottom: 1px solid rgba(255, 255, 255, 0.25);
+    color: #f0f0f0; /* 更柔和的白色标题 */
 }
 
-.header h1 { padding: 20px 0; margin: 0; }
+.header h1 { padding: 15px 0; margin: 0; font-size: 1.8em; }
 
 #bookmarkButton {
     text-decoration: none;
-    color: #eee;
-    font-size: 1.5em;
+    color: #e0e0e0;
+    font-size: 1.3em;
     transition: transform 0.2s;
 }
-#bookmarkButton:hover { transform: scale(1.2); }
+#bookmarkButton:hover { transform: scale(1.1); color: #fff; }
 
 #messages {
     flex-grow: 1;
     padding: 20px;
     overflow-y: auto;
-    color: white;
+    color: #e0e0e0; /* 更易读的浅灰色消息文字 */
 }
 
-#messages::-webkit-scrollbar { width: 6px; }
-#messages::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.4); border-radius: 3px; }
+#messages::-webkit-scrollbar { width: 8px; }
+#messages::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.3); border-radius: 4px; }
 
 .message {
-    margin-bottom: 15px;
-    padding: 10px 15px;
-    border-radius: 18px;
-    max-width: 70%;
+    margin-bottom: 12px; /* 稍微减小间距 */
+    padding: 10px 16px; /* 调整内边距 */
+    border-radius: 20px; /* 更圆润的气泡 */
+    max-width: 75%; /* 稍微缩小最大宽度 */
     word-wrap: break-word;
 }
 
 .message.sent {
-    background-color: rgba(50, 150, 255, 0.7);
+    background-color: rgba(100, 150, 220, 0.6); /* 更柔和的蓝色 */
     color: white;
     margin-left: auto;
-    border-bottom-right-radius: 5px;
+    border-bottom-right-radius: 8px;
 }
 
 .message.received {
-    background-color: rgba(233, 233, 235, 0.5);
-    color: #111;
+    background-color: rgba(240, 240, 245, 0.4); /* 更柔和的浅灰色 */
+    color: #333; /* 深色文字提高对比度 */
     margin-right: auto;
-    border-bottom-left-radius: 5px;
+    border-bottom-left-radius: 8px;
 }
 
 .message.system {
     text-align: center;
     color: #ccc;
-    font-size: 0.8em;
+    font-size: 0.9em;
     width: 100%;
 }
 
 .input-area {
     display: flex;
-    padding: 20px;
-    border-top: 1px solid rgba(255, 255, 255, 0.2);
+    padding: 15px 20px;
+    border-top: 1px solid rgba(255, 255, 255, 0.25);
 }
 
 #messageInput {
     flex-grow: 1;
-    border: 1px solid rgba(255, 255, 255, 0.3);
-    padding: 10px 15px;
-    border-radius: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.35);
+    padding: 12px 18px;
+    border-radius: 25px; /* 更圆润的输入框 */
     margin-right: 10px;
-    background: rgba(255, 255, 255, 0.2);
-    color: white;
+    background: rgba(255, 255, 255, 0.1); /* 更透明的背景 */
+    color: #f0f0f0;
 }
-#messageInput::placeholder { color: #eee; }
+#messageInput::placeholder { color: #aaa; }
 
 #sendButton {
-    padding: 10px 20px;
+    padding: 12px 25px;
     border: none;
-    background-color: #007bff;
+    background-color: #007bff; /* 保持蓝色 */
     color: white;
-    border-radius: 20px;
+    border-radius: 25px;
     cursor: pointer;
+    transition: background-color 0.3s;
 }
+#sendButton:hover { background-color: #0056b3; }
