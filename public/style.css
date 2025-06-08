@@ -10,10 +10,10 @@ body {
     background: radial-gradient(ellipse at bottom, #1B2735 0%, #090A0F 100%);
     height: 100vh;
     overflow: hidden;
-    position: relative; /* 允许流星雨定位 */
+    position: relative;
 }
 
-/* 星星背景 (保持) */
+/* 星星背景 */
 @keyframes move-stars {
     from { background-position: 0 0; }
     to   { background-position: 0 -10000px; }
@@ -37,7 +37,7 @@ body {
     animation: move-stars 50s linear infinite;
 }
 .stars2 {
-    background-image: url('data:image/svg+xml;base64,PHN2ZyB2ZXJzaW9uPSIxLjEiIGlkPSJMYXllcl8xIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB4PSIwcHgiIHk9IjBweCIgd2lkdGg9IjNweCIgaGVpZ2h0PSIzcHgiIHZpZXdCb3g9IjAgMCAzIDMiIGVuYWJsZS1iYWNrZ3JvdW5kPSJuZXcgMCAwIDMgMyIgeG1sOnNwYWNlPSJwcmVzZXJ2ZSI+PHJlY3QgeD0iMSIgeT0iMSIgd2lkdGg9IjEiIGhlaWdodD0iMSIgZmlsbD0iI0ZGRkZGRiIvPjwvc3ZnPg==');
+    background-image: url('data:image/svg+xml;base64,PHN2ZyB2ZXJzaW9uPSIxLjEiIGlkPSJMYXllcl8xIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB4PSIwcHgiIHk9IjBweCIgd2lkdGg9IjNweCIgaGVpZﾞh0PSIzcHgiIHZpZXdCb3g9IjAgMCAzIDMiIGVuYWJsZS1iYWNrZ3JvdW5kPSJuZXcgMCAwIDMgMyIgeG1sOnNwYWNlPSJwcmVzZXJ2ZSI+PHJlY3QgeD0iMSIgeT0iMSIgd2lkdGg9IjEiIGhlaWdodD0iMSIgZmlsbD0iI0ZGRkZGRiIvPjwvc3ZnPg==');
     animation: move-stars 100s linear infinite;
 }
 .stars3 {
@@ -48,28 +48,32 @@ body {
 /* 流星雨 */
 .meteor {
     position: absolute;
-    display: block;
-    top: -100px; /* 初始在屏幕上方 */
-    background: linear-gradient(45deg, rgba(255, 255, 255, 0.8) 0%, rgba(0,0,0,0) 100%);
+    width: 4px; /* 流星核心宽度 */
+    height: 4px; /* 流星核心高度 */
+    background: #fff;
     border-radius: 50%;
+    box-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 15px #fff;
     opacity: 0;
-    z-index: 11; /* 在聊天窗口之上 */
+    animation: meteor-shower 3s linear infinite;
+}
+.meteor::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 200px; /* 尾巴长度 */
+    height: 2px; /* 尾巴粗细 */
+    background: linear-gradient(to left, #fff, transparent);
 }
 
 @keyframes meteor-shower {
     0% {
-        transform: translateX(0) translateY(0) rotate(45deg);
-        opacity: 0;
-    }
-    10% {
         opacity: 1;
-    }
-    80% {
-        opacity: 0.7;
+        transform: translate(300px, -300px) rotate(-45deg);
     }
     100% {
-        transform: translateX(calc(200vh + 100vw)) translateY(calc(200vh + 100vw)) rotate(45deg);
         opacity: 0;
+        transform: translate(-100vw, 100vh) rotate(-45deg);
     }
 }
 
@@ -88,11 +92,11 @@ body {
 .chat-window {
     width: 90%;
     max-width: 600px;
-    background: rgba(255, 255, 255, 0.15); /* 更柔和的半透明白色 */
-    backdrop-filter: blur(15px); /* 更强的模糊效果 */
-    border-radius: 15px; /* 更圆润的边角 */
-    border: 1px solid rgba(255, 255, 255, 0.25); /* 更柔和的边框 */
-    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2); /* 更明显的阴影 */
+    background: rgba(30, 40, 70, 0.6); /* 深蓝色调 */
+    backdrop-filter: blur(10px);
+    border-radius: 15px;
+    border: 1px solid rgba(100, 120, 200, 0.5);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
     display: flex;
     flex-direction: column;
     height: 80vh;
@@ -102,84 +106,82 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 15px 20px; /* 稍微增加内边距 */
-    border-bottom: 1px solid rgba(255, 255, 255, 0.25);
-    color: #f0f0f0; /* 更柔和的白色标题 */
+    padding: 15px 25px;
+    border-bottom: 1px solid rgba(100, 120, 200, 0.5);
+    color: #f0f8ff; /* 爱丽丝蓝 */
+    text-shadow: 0 0 5px rgba(173, 216, 230, 0.7); /* 淡蓝色光晕 */
 }
 
-.header h1 { padding: 15px 0; margin: 0; font-size: 1.8em; }
-
-#bookmarkButton {
-    text-decoration: none;
-    color: #e0e0e0;
-    font-size: 1.3em;
-    transition: transform 0.2s;
-}
-#bookmarkButton:hover { transform: scale(1.1); color: #fff; }
+.header h1 { padding: 10px 0; margin: 0; font-size: 1.5em; font-weight: 400; }
+#bookmarkButton { text-decoration: none; color: #f0f8ff; font-size: 1.3em; transition: transform 0.2s; }
+#bookmarkButton:hover { transform: scale(1.2); }
 
 #messages {
     flex-grow: 1;
     padding: 20px;
     overflow-y: auto;
-    color: #e0e0e0; /* 更易读的浅灰色消息文字 */
+    color: #e0e0e0;
 }
 
-#messages::-webkit-scrollbar { width: 8px; }
-#messages::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.3); border-radius: 4px; }
+#messages::-webkit-scrollbar { width: 6px; }
+#messages::-webkit-scrollbar-thumb { background: rgba(100, 120, 200, 0.5); border-radius: 3px; }
 
 .message {
-    margin-bottom: 12px; /* 稍微减小间距 */
-    padding: 10px 16px; /* 调整内边距 */
-    border-radius: 20px; /* 更圆润的气泡 */
-    max-width: 75%; /* 稍微缩小最大宽度 */
+    margin-bottom: 15px;
+    padding: 10px 16px;
+    border-radius: 20px;
+    max-width: 75%;
     word-wrap: break-word;
+    line-height: 1.4;
 }
 
 .message.sent {
-    background-color: rgba(100, 150, 220, 0.6); /* 更柔和的蓝色 */
+    background: linear-gradient(45deg, #4f6de4, #2d4cb3);
     color: white;
     margin-left: auto;
-    border-bottom-right-radius: 8px;
+    border-bottom-right-radius: 5px;
 }
 
 .message.received {
-    background-color: rgba(240, 240, 245, 0.4); /* 更柔和的浅灰色 */
-    color: #333; /* 深色文字提高对比度 */
+    background: rgba(255, 255, 255, 0.2);
+    color: #f0f8ff;
     margin-right: auto;
-    border-bottom-left-radius: 8px;
+    border-bottom-left-radius: 5px;
 }
 
 .message.system {
     text-align: center;
-    color: #ccc;
+    color: rgba(173, 216, 230, 0.8);
     font-size: 0.9em;
     width: 100%;
+    background: none;
 }
 
 .input-area {
     display: flex;
     padding: 15px 20px;
-    border-top: 1px solid rgba(255, 255, 255, 0.25);
+    border-top: 1px solid rgba(100, 120, 200, 0.5);
 }
 
 #messageInput {
     flex-grow: 1;
-    border: 1px solid rgba(255, 255, 255, 0.35);
+    border: 1px solid rgba(100, 120, 200, 0.5);
     padding: 12px 18px;
-    border-radius: 25px; /* 更圆润的输入框 */
+    border-radius: 25px;
     margin-right: 10px;
-    background: rgba(255, 255, 255, 0.1); /* 更透明的背景 */
-    color: #f0f0f0;
+    background: rgba(0, 0, 0, 0.2);
+    color: #f0f8ff;
+    font-size: 1em;
 }
 #messageInput::placeholder { color: #aaa; }
 
 #sendButton {
     padding: 12px 25px;
     border: none;
-    background-color: #007bff; /* 保持蓝色 */
+    background: linear-gradient(45deg, #2d4cb3, #4f6de4);
     color: white;
     border-radius: 25px;
     cursor: pointer;
-    transition: background-color 0.3s;
+    transition: all 0.3s;
 }
-#sendButton:hover { background-color: #0056b3; }
+#sendButton:hover { box-shadow: 0 0 15px rgba(79, 109, 228, 0.7); }
