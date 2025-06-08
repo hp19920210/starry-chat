@@ -6,6 +6,7 @@ Starry Chat ✨ - 我的星空密语聊天室
 这个项目很简单，没有复杂的框架，回归到了最纯粹的 Web 技术。
 
 效果预览
+![image](https://github.com/user-attachments/assets/3bfcda8a-6e5f-428b-ad25-9c9c0a12b060)
 
 
 核心功能
